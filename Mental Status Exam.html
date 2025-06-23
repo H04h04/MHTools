@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://nickhighland.com/MSE.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Mental Status Exam</title>    <style>        .form-container {            max-width: 800px;            margin: 0 auto;        }
+        .category {            display: flex;            flex-wrap: wrap;
+            /* Adjust width and margin for better spacing */
+            justify-content: space-between;
+        }
+        .category label {            width: 30%; /* Adjust as needed */            margin: 5px 0; /* Adjust as needed */        }
+        .category input[type="text"] {            width: 98%;            margin: 5px 0;        }
+        .custom-input {            width: 94%;            margin: 1%;        }                legend {    font-weight: bold;    color: red;}    </style></head>
+<body>    <br><br>    <div class="form-container">        <div class="form-container">            <h1>                <center>Mental Status Exam</center>            </h1>            <fieldset>                <legend>Presets</legend>                <div class="positive-mse">                    <label><input type="checkbox" id="positiveMSE" onclick="togglePositiveMSE()"> Normal MSE</label><br><br>                    <label><input type="checkbox" id="telehealthpositiveMSE" onclick="TelehealthPositiveMSE()"> Telehealth Normal MSE</label>                </div>            </fieldset>
+
+            <br>
+
+            <fieldset>                <legend>Orientation</legend>                <div class="category">                    <label><input type="checkbox" id="x4" onclick="updateText()"> Oriented x4</label>                    <label><input type="checkbox" id="time" onclick="updateText()"> Time</label>                    <label><input type="checkbox" id="place" onclick="updateText()"> Place</label>                    <label><input type="checkbox" id="situation" onclick="updateText()"> Situation</label>                    <label><input type="checkbox" id="person" onclick="updateText()"> Person</label>                    <input type="text" id="orientationCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Clothing/Grooming</legend>                <div class="category">                    <label><input type="checkbox" id="neat" onclick="updateText()"> Neat</label>                    <label><input type="checkbox" id="clean" onclick="updateText()"> Clean</label>                    <label><input type="checkbox" id="appropriatelydressed" onclick="updateText()"> Appropriately Dressed</label>                    <label><input type="checkbox" id="careless" onclick="updateText()"> Careless</label>                    <label><input type="checkbox" id="disheveled" onclick="updateText()"> Disheveled</label>                    <label><input type="checkbox" id="dirty" onclick="updateText()"> Dirty</label>                    <label><input type="checkbox" id="inappropriate" onclick="updateText()"> Inappropriate</label>                    <label><input type="checkbox" id="bizarre" onclick="updateText()"> Bizarre</label>                    <input type="text" id="clothingGroomingCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Motor Activity</legend>                <div class="category">                    <label><input type="checkbox" id="notRemarkable" onclick="updateText()"> Not Remarkable</label>                    <label><input type="checkbox" id="slowed" onclick="updateText()"> Slowed</label>                    <label><input type="checkbox" id="repetitive" onclick="updateText()"> Repetitive</label>                    <label><input type="checkbox" id="restless" onclick="updateText()"> Restless</label>                    <label><input type="checkbox" id="agitated" onclick="updateText()"> Agitated</label>                    <label><input type="checkbox" id="tremor" onclick="updateText()"> Tremor</label>                    <input type="text" id="motorActivityCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Behavior</legend>                <div class="category">                    <label><input type="checkbox" id="appropriate" onclick="updateText()"> Appropriate</label>                    <label><input type="checkbox" id="aggressive" onclick="updateText()"> Aggressive</label>                    <label><input type="checkbox" id="angry" onclick="updateText()"> Angry</label>                    <label><input type="checkbox" id="apathetic" onclick="updateText()"> Apathetic</label>                    <label><input type="checkbox" id="irritable" onclick="updateText()"> Irritable</label>                    <label><input type="checkbox" id="passive" onclick="updateText()"> Passive</label>                    <label><input type="checkbox" id="manipulative" onclick="updateText()"> Manipulative</label>                    <input type="text" id="behaviorCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Attention</legend>                <div class="category">                    <label><input type="checkbox" id="normalAttention" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="unaware" onclick="updateText()"> Unaware</label>                    <label><input type="checkbox" id="distractible" onclick="updateText()"> Distractible</label>                    <label><input type="checkbox" id="vigilant" onclick="updateText()"> Vigilant</label>                    <input type="text" id="attentionCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+
+            <fieldset>                <legend>Recall/Memory</legend>                <div class="category">                    <label><input type="checkbox" id="normalMemory" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="shortTermImpaired" onclick="updateText()"> Short-term Impaired, Long-Term Intact</label>                    <label><input type="checkbox" id="longTermImpaired" onclick="updateText()"> Short-term Intact, Long-term Impaired</label>                    <input type="text" id="recallMemoryCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Eye Contact</legend>                <div class="category">                    <label><input type="checkbox" id="normalEyeContact" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="fleeting" onclick="updateText()"> Fleeting</label>                    <label><input type="checkbox" id="avoided" onclick="updateText()"> Avoided</label>                    <label><input type="checkbox" id="none" onclick="updateText()"> None</label>                    <label><input type="checkbox" id="staring" onclick="updateText()"> Staring</label>                    <input type="text" id="eyeContactCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Facial Expression</legend>                <div class="category">                    <label><input type="checkbox" id="responsive" onclick="updateText()"> Responsive</label>                    <label><input type="checkbox" id="tense" onclick="updateText()"> Tense</label>                    <label><input type="checkbox" id="anxious" onclick="updateText()"> Anxious</label>                    <label><input type="checkbox" id="sad" onclick="updateText()"> Sad</label>                    <label><input type="checkbox" id="angry" onclick="updateText()"> Angry</label>                    <input type="text" id="facialExpressionCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Attitude toward Evaluator</legend>                <div class="category">
+                    <label><input type="checkbox" id="cooperative" onclick="updateText()"> Cooperative</label>
+                    <label><input type="checkbox" id="friendly" onclick="updateText()"> Friendly</label>
+                    <label><input type="checkbox" id="guarded" onclick="updateText()"> Guarded</label>
+                    <label><input type="checkbox" id="hostile" onclick="updateText()"> Hostile</label>
+                    <label><input type="checkbox" id="indifferent" onclick="updateText()"> Indifferent</label>
+                    <label><input type="checkbox" id="ingratiating" onclick="updateText()"> Ingratiating</label>
+                    <label><input type="checkbox" id="manipulative" onclick="updateText()"> Manipulative</label>
+                    <label><input type="checkbox" id="open" onclick="updateText()"> Open</label>
+                    <label><input type="checkbox" id="seductive" onclick="updateText()"> Seductive</label>
+                    <label><input type="checkbox" id="suspicious" onclick="updateText()"> Suspicious</label>
+                    <label><input type="checkbox" id="uncooperative" onclick="updateText()"> Uncooperative</label>
+                    <input type="text" id="attitudeEvaluatorCustom" class="custom-input" placeholder="Other" oninput="updateText()">
+                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Affect</legend>                <div class="category">                    <label><input type="checkbox" id="affectCongruent" onclick="updateText()"> Congruent</label>                    <label><input type="checkbox" id="affectIncongruent" onclick="updateText()"> Incongruent</label>                    <label><input type="checkbox" id="affectAppropriate" onclick="updateText()"> Appropriate</label>                    <label><input type="checkbox" id="affectInappropriate" onclick="updateText()"> Inappropriate</label>                    <label><input type="checkbox" id="labile" onclick="updateText()"> Labile</label>                    <label><input type="checkbox" id="restricted" onclick="updateText()"> Restricted</label>                    <label><input type="checkbox" id="flat" onclick="updateText()"> Flat</label>                    <label><input type="checkbox" id="reactive" onclick="updateText()"> Reactive</label>                    <label><input type="checkbox" id="blunted" onclick="updateText()"> Blunted</label>                    <input type="text" id="affectCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Mood</legend>                <div class="category">                    <label><input type="checkbox" id="euthymic" onclick="updateText()"> Euthymic</label>                    <label><input type="checkbox" id="dysphoric" onclick="updateText()"> Dysphoric</label>                    <label><input type="checkbox" id="anxiousmood" onclick="updateText()"> Anxious</label>                    <label><input type="checkbox" id="angrymood" onclick="updateText()"> Angry</label>                    <label><input type="checkbox" id="irritableMood" onclick="updateText()"> Irritable</label>                    <label><input type="checkbox" id="pessimistic" onclick="updateText()"> Pessimistic</label>                    <label><input type="checkbox" id="depressed" onclick="updateText()"> Depressed</label>                    <label><input type="checkbox" id="hypomanic" onclick="updateText()"> Hypomanic</label>                    <label><input type="checkbox" id="euphoric" onclick="updateText()"> Euphoric</label>                    <input type="text" id="moodCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Speech</legend>                <div class="category">                    <label><input type="checkbox" id="normalSpeech" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="loud" onclick="updateText()"> Loud</label>                    <label><input type="checkbox" id="blocked" onclick="updateText()"> Blocked</label>                    <label><input type="checkbox" id="pressured" onclick="updateText()"> Pressured</label>                    <label><input type="checkbox" id="flightOfIdeas" onclick="updateText()"> Flight of Ideas</label>                    <label><input type="checkbox" id="slurred" onclick="updateText()"> Slurred</label>                    <label><input type="checkbox" id="soft" onclick="updateText()"> Soft</label>                    <label><input type="checkbox" id="stuttering" onclick="updateText()"> Stuttering</label>                    <label><input type="checkbox" id="mute" onclick="updateText()"> Mute</label>                    <label><input type="checkbox" id="verbose" onclick="updateText()"> Verbose</label>                    <input type="text" id="speechCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Expression of Thought Content</legend>                <div class="category">                    <label><input type="checkbox" id="expressionCongruent" onclick="updateText()"> Congruent</label>                    <label><input type="checkbox" id="expressionIncongruent" onclick="updateText()"> Incongruent</label>                    <label><input type="checkbox" id="looseassociations" onclick="updateText()"> Loose Associations</label>                    <label><input type="checkbox" id="suspicions" onclick="updateText()"> Suspicions</label>                    <label><input type="checkbox" id="delusions" onclick="updateText()"> Delusions</label>                    <label><input type="checkbox" id="phobias" onclick="updateText()"> Phobias</label>                    <label><input type="checkbox" id="obsessions" onclick="updateText()"> Obsessions</label>                    <input type="text" id="expressionCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Organization of Thought</legend>                <div class="category">                    <label><input type="checkbox" id="normalOrganization" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="logical" onclick="updateText()"> Logical</label>                    <label><input type="checkbox" id="goalDirected" onclick="updateText()"> Goal-directed</label>                    <input type="text" id="organizationCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Perception</legend>                <div class="category">                    <label><input type="checkbox" id="noHallucinations" onclick="updateText()"> No Hallucinations or Delusions during Interview</label>                    <label><input type="checkbox" id="auditoryhallucinations" onclick="updateText()"> Auditory Hallucinations</label>                    <label><input type="checkbox" id="visualhallucinations" onclick="updateText()"> Visual Hallucinations</label>                    <label><input type="checkbox" id="olfactoryhallucinations" onclick="updateText()"> Olfactory Hallucinations</label>                    <label><input type="checkbox" id="tactilehallucinations" onclick="updateText()"> Tactile Hallucinations</label>                    <label><input type="checkbox" id="gustatoryhallucinations" onclick="updateText()"> Gustatory Hallucinations</label>                    <label><input type="checkbox" id="delusionsPresent" onclick="updateText()"> Delusions Present</label>                    <input type="text" id="perceptionCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Insight</legend>                <div class="category">                    <label><input type="checkbox" id="insightExcellent" onclick="updateText()"> Excellent</label>                    <label><input type="checkbox" id="insightGood" onclick="updateText()"> Good</label>                    <label><input type="checkbox" id="insightFair" onclick="updateText()"> Fair</label>                    <label><input type="checkbox" id="insightPoor" onclick="updateText()"> Poor</label>                    <label><input type="checkbox" id="insightNil" onclick="updateText()"> nil</label>                    <input type="text" id="insightCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Judgment</legend>                <div class="category">                    <label><input type="checkbox" id="judgementExcellent" onclick="updateText()"> Excellent</label>                    <label><input type="checkbox" id="judgementGood" onclick="updateText()"> Good</label>                    <label><input type="checkbox" id="judgementFair" onclick="updateText()"> Fair</label>                    <label><input type="checkbox" id="judgementPoor" onclick="updateText()"> Poor</label>                    <label><input type="checkbox" id="judgementNil" onclick="updateText()"> nil</label>                    <label><input type="checkbox" id="judgementDangerous" onclick="updateText()"> Dangerous</label>                    <input type="text" id="judgmentCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+            <fieldset>                <legend>Decision Making</legend>                <div class="category">                    <label><input type="checkbox" id="normalDecisionMaking" onclick="updateText()"> Normal</label>                    <label><input type="checkbox" id="onlySimple" onclick="updateText()"> Only Simple</label>                    <label><input type="checkbox" id="impulsive" onclick="updateText()"> Impulsive</label>                    <label><input type="checkbox" id="confused" onclick="updateText()"> Confused</label>                    <input type="text" id="decisionMakingCustom" class="custom-input" placeholder="Other" oninput="updateText()">                </div>            </fieldset>
+            <br>
+
+            <fieldset>                <legend>Safety</legend>                <div class="category">                    <label><input type="checkbox" id="noSIHI" onclick="updateText()"> No evidence or report of SI/HI</label>                    <label><input type="checkbox" id="deniesSIHI" onclick="updateText()"> Denies SI/HI</label>                    <label><input type="checkbox" id="reportsHI" onclick="updateText()"> Reports HI</label>                    <label><input type="checkbox" id="reportsPassiveSIT" onclick="updateText()"> Reports Passive Suicidal Thoughts</label>                    <label><input type="checkbox" id="reportsSuicidePlan" onclick="updateText()"> Reports Suicide Plan</label>                    <label><input type="checkbox" id="reportsSuicidalIntention" onclick="updateText()"> Reports Suicidal Intention</label>
+                    <input type="text" id="safetyCustom" class="custom-input" placeholder="Other" oninput="updateText()">
+                </div>            </fieldset>
+            <br>
+
+            <textarea id="textbox" rows="18" cols="100"></textarea>            <br><br>
+            <button onclick="copyToClipboard()">COPY</button>
+        </div>        <script>            function togglePositiveMSE() {                var positiveMSE = document.getElementById("positiveMSE");
+
+                // Uncheck Telehealth Normal MSE if Normal MSE is checked
+                if (positiveMSE.checked) {
+                    document.getElementById("telehealthpositiveMSE").checked = false;
+                }
+
+                // Positive MSE checked checkboxes
+                var positiveCheckboxes = [
+                    // Safety
+                    "noSIHI",
+                    // Orientation
+                    "x4",
+                    // Clothing/Grooming
+                    "neat", "clean", "appropriatelydressed",
+                    // Motor Activity
+                    "notRemarkable",
+                    // Behavior
+                    "appropriate",
+                    // Attention
+                    "normalAttention",
+                    // Recall/Memory
+                    "normalMemory",
+                    // Eye Contact
+                    "normalEyeContact",
+                    // Facial Expression
+                    "responsive",
+                    // Attitude toward Evaluator
+                    "cooperative",
+                    // Affect
+                    "affectCongruent", "affectAppropriate",
+                    // Mood
+                    "euthymic",
+                    // Speech
+                    "normalSpeech",
+                    // Expression of Thought Content
+                    "expressionCongruent",
+                    // Organization of Thought
+                    "normalOrganization", "logical", "goalDirected",
+                    // Perception
+                    "noHallucinations",
+                    // Insight
+                    "insightExcellent",
+                    // Judgment (Corrected ID to match existing HTML)
+                    "judgementExcellent",
+                    // Decision Making
+                    "normalDecisionMaking"
+                ];
+                // If Positive MSE is checked, check all specified boxes
+                // If unchecked, uncheck all specified boxes
+                positiveCheckboxes.forEach(id => {
+                    var checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = positiveMSE.checked;
+                    }
+                });
+
+                // Ensure "No evidence or report of SI/HI" is checked if Normal MSE is selected, otherwise maintain its current state.
+                if (positiveMSE.checked) {
+                    document.getElementById("noSIHI").checked = true;
+                }
+
+                // Update the text area
+                updateText();
+            }
+        </script>
+
+        <script>
+            function TelehealthPositiveMSE() {
+                var telehealthpositiveMSE = document.getElementById("telehealthpositiveMSE");
+
+                // Uncheck Normal MSE if Telehealth Normal MSE is checked
+                if (telehealthpositiveMSE.checked) {
+                    document.getElementById("positiveMSE").checked = false;
+                }
+
+                // Telehealth Positive MSE checked checkboxes
+                var positiveCheckboxes = [
+                    // Safety
+                    "noSIHI",
+                    // Orientation
+                    "x4",
+                    // Behavior
+                    "appropriate",
+                    // Attention
+                    "normalAttention",
+                    // Recall/Memory
+                    "normalMemory",
+                    // Attitude toward Evaluator
+                    "cooperative",
+                    // Affect
+                    "affectCongruent", "affectAppropriate",
+                    // Mood
+                    "euthymic",
+                    // Speech
+                    "normalSpeech",
+                    // Expression of Thought Content
+                    "expressionCongruent",
+                    // Organization of Thought
+                    "normalOrganization", "logical", "goalDirected",
+                    // Perception
+                    "noHallucinations",
+                    // Insight
+                    "insightExcellent",
+                    // Judgment (Corrected ID to match existing HTML)
+                    "judgementExcellent",
+                    // Decision Making
+                    "normalDecisionMaking"
+                ];
+                // If Positive MSE is checked, check all specified boxes
+                // If unchecked, uncheck all specified boxes
+                positiveCheckboxes.forEach(id => {
+                    var checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = telehealthpositiveMSE.checked;
+                    }
+                });
+
+                // Ensure "No evidence or report of SI/HI" is checked if Telehealth Normal MSE is selected, otherwise maintain its current state.
+                if (telehealthpositiveMSE.checked) {
+                    document.getElementById("noSIHI").checked = true;
+                }
+
+                // Update the text area
+                updateText();
+            }
+        </script>
+
+        <script>
+            function updateText() {
+                var textbox = document.getElementById("textbox");
+                var text = "";
+
+                var categories = [
+                    {
+                        name: "Orientation",
+                        checkboxes: ["x4", "time", "place", "situation", "person"],
+                        custom: "orientationCustom"
+                    },
+                    {
+                        name: "Clothing/Grooming",
+                        checkboxes: ["neat", "clean", "appropriatelydressed", "careless", "disheveled", "dirty", "inappropriate", "bizarre"],
+                        custom: "clothingGroomingCustom"
+                    },
+                    {
+                        name: "Motor Activity",
+                        checkboxes: ["notRemarkable", "slowed", "repetitive", "restless", "agitated", "tremor"],
+                        custom: "motorActivityCustom"
+                    },
+                    {
+                        name: "Behavior",
+                        checkboxes: ["appropriate", "aggressive", "angry", "apathetic", "irritable", "passive", "manipulative"],
+                        custom: "behaviorCustom"
+                    },
+                    {
+                        name: "Attention",
+                        checkboxes: ["normalAttention", "unaware", "distractible", "vigilant"],
+                        custom: "attentionCustom"
+                    },
+                    {
+                        name: "Recall/Memory",
+                        checkboxes: ["normalMemory", "shortTermImpaired", "longTermImpaired"],
+                        custom: "recallMemoryCustom"
+                    },
+                    {
+                        name: "Eye Contact",
+                        checkboxes: ["normalEyeContact", "fleeting", "avoided", "none", "staring"],
+                        custom: "eyeContactCustom"
+                    },
+                    {
+                        name: "Facial Expression",
+                        checkboxes: ["responsive", "tense", "anxious", "sad", "angry"],
+                        custom: "facialExpressionCustom"
+                    },
+                    {
+                        name: "Attitude toward Evaluator",
+                        checkboxes: ["cooperative", "friendly", "guarded", "hostile", "indifferent", "ingratiating", "manipulative", "open", "seductive", "suspicious", "uncooperative"],
+                        custom: "attitudeEvaluatorCustom"
+                    },
+                    {
+                        name: "Affect",
+                        checkboxes: ["affectCongruent", "affectIncongruent", "affectAppropriate", "affectInappropriate", "labile", "restricted", "flat", "reactive", "blunted"],
+                        custom: "affectCustom"
+                    },
+                    {
+                        name: "Mood",
+                        checkboxes: ["euthymic", "dysphoric", "anxiousmood", "angrymood", "irritableMood", "pessimistic", "depressed", "hypomanic", "euphoric"],
+                        custom: "moodCustom"
+                    },
+                    {
+                        name: "Speech",
+                        checkboxes: ["normalSpeech", "loud", "blocked", "pressured", "flightOfIdeas", "slurred", "soft", "stuttering", "mute", "verbose"],
+                        custom: "speechCustom"
+                    },
+                    {
+                        name: "Expression of Thought Content",
+                        checkboxes: ["expressionCongruent", "expressionIncongruent", "looseassociations", "suspicions", "delusions", "phobias", "obsessions"],
+                        custom: "expressionCustom"
+                    },
+                    {
+                        name: "Organization of Thought",
+                        checkboxes: ["normalOrganization", "logical", "goalDirected"],
+                        custom: "organizationCustom"
+                    },
+                    {
+                        name: "Perception",
+                        checkboxes: ["noHallucinations", "auditoryhallucinations", "visualhallucinations", "olfactoryhallucinations", "tactilehallucinations", "gustatoryhallucinations", "delusionsPresent"],
+                        custom: "perceptionCustom"
+                    },
+                    {
+                        name: "Insight",
+                        checkboxes: ["insightExcellent", "insightGood", "insightFair", "insightPoor", "insightNil"],
+                        custom: "insightCustom"
+                    },
+                    {
+                        name: "Judgment",
+                        checkboxes: ["judgementExcellent", "judgementGood", "judgementFair", "judgementPoor", "judgementNil", "judgementDangerous"],
+                        custom: "judgmentCustom"
+                    },
+                    {
+                        name: "Decision Making",
+                        checkboxes: ["normalDecisionMaking", "onlySimple", "impulsive", "confused"],
+                        custom: "decisionMakingCustom"
+                    },
+                    {
+                        name: "Safety",
+                        checkboxes: ["noSIHI", "deniesSIHI", "reportsHI", "reportsPassiveSIT", "reportsSuicidePlan", "reportsSuicidalIntention"],
+                        custom: "safetyCustom"
+                    }
+                ];
+
+                categories.forEach(category => {
+                    var categoryText = category.name + ": ";
+                    var checkedItems = [];
+                    category.checkboxes.forEach(id => {
+                        var checkbox = document.getElementById(id);
+                        if (checkbox && checkbox.checked) {
+                            checkedItems.push(checkbox.nextSibling.nodeValue.trim());
+                        }
+                    });
+                    var customInput = document.getElementById(category.custom) ? document.getElementById(category.custom).value : "";
+                    if (customInput) {
+                        checkedItems.push(customInput);
+                    }
+                    if (checkedItems.length > 0) {
+                        text += categoryText + checkedItems.join(", ") + "\n";
+                    }
+                });
+
+                textbox.value = text.trim();
+            }
+
+            function copyToClipboard() {
+                var textbox = document.getElementById("textbox");
+                textbox.select();
+                document.execCommand("copy");
+                alert("Copied to clipboard: " + textbox.value);
+            }
+        </script>
+
+
+    </div>
+</body></html>

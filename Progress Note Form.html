@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://nickhighland.com/DARP.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Note Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label, select, input, textarea {
+      display: block;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      resize: none;
+      overflow: hidden;
+    }
+    .interventions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .column {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      flex: 1 1 calc(16.666% - 20px);
+      box-sizing: border-box;
+    }
+    @media (max-width: 1024px) {
+      .column {
+        flex: 1 1 calc(33.333% - 20px);
+      }
+    }
+    @media (max-width: 480px) {
+      .column {
+        flex: 1 1 100%;
+      }
+    }
+    .inline-label {
+      font-size: 14px;
+    }
+    .inline-checkbox {
+      display: flex;
+      align-items: center;
+    }
+    button {
+      margin-top: 10px;
+    }
+    h3 {
+      margin-top: 30px;
+    }
+  </style>
+
+  <script>
+    function updateProgressNote() {
+      const mentalStatus = document.getElementById('mentalStatus').value;
+      const problemsAddressed = document.getElementById('problemsAddressed').value;
+      const diagnoses = document.getElementById('diagnoses').value;
+      const updatesProgress = document.getElementById('updatesProgress').value;
+      const additionalNotes = document.getElementById('additionalNotes').value;
+      const additionalAssessment = document.getElementById('additionalAssessment').value;
+      const response = document.getElementById('response').value;
+      const plan = document.getElementById('plan').value;
+      const toxicologyScreen = document.getElementById('toxicologyScreen').checked;
+
+      let interventionsUsed = "Interventions Used:\n";
+      interventionsUsed += getCustomInterventions();
+      interventionsUsed += getInterventions('CBT');
+      interventionsUsed += getInterventions('Narrative Interventions');
+      interventionsUsed += getInterventions('Solution Focused');
+      interventionsUsed += getInterventions('Person Centered');
+      interventionsUsed += getInterventions('Motivational Interviewing');
+
+      let progressNote = '';
+
+      progressNote += "DATA:\n";
+      if (diagnoses) progressNote += `Diagnoses:\n${diagnoses}\n\n`;
+      if (problemsAddressed) progressNote += `Problems Addressed in the Counseling Session:\n${problemsAddressed}\n\n`;
+      if (updatesProgress) progressNote += `Updates and Progress to Client's Treatment Goals:\n${updatesProgress}\n\n`;
+      if (toxicologyScreen) progressNote += `Client provided a toxicology screen.\n\n`;
+      if (additionalNotes) progressNote += `Additional Notes:\n${additionalNotes}\n\n`;
+      if (interventionsUsed.trim() !== "Interventions Used:") progressNote += `${interventionsUsed}\n`;
+
+      progressNote += "ASSESSMENT:\n";
+      if (mentalStatus) progressNote += `Mental Status Exam:\n${mentalStatus}\n\n`;
+      if (additionalAssessment) progressNote += `Additional Assessment:\n${additionalAssessment}\n\n`;
+
+      progressNote += "RESPONSE:\n";
+      if (response) progressNote += `${response}\n\n`;
+
+      progressNote += "PLAN:\n";
+      if (plan) progressNote += `${plan}`;
+
+      const noteBox = document.getElementById('progressNote');
+      noteBox.value = progressNote;
+      autoResize(noteBox);
+    }
+
+    function getInterventions(columnTitle) {
+      const selected = document.querySelectorAll(`input[name='${columnTitle}']:checked`);
+      const other = document.getElementById(`${columnTitle.replace(/\s+/g, '')}Other`);
+      let interventions = Array.from(selected).map(cb => cb.value);
+      if (other && other.value.trim()) interventions.push(other.value.trim());
+      return interventions.length ? `${columnTitle}: ${interventions.join(", ")}\n` : '';
+    }
+
+    function getCustomInterventions() {
+      const selected = document.querySelectorAll('#customList input[type="checkbox"]:checked');
+      const interventions = Array.from(selected).map(cb => cb.value);
+      return interventions.length ? `${interventions.join(", ")}\n` : '';
+    }
+
+    function copyToClipboard() {
+      const note = document.getElementById('progressNote');
+      note.select();
+      document.execCommand("copy");
+      alert("Progress note copied to clipboard!");
+    }
+
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    let savedCustoms = JSON.parse(localStorage.getItem('customInterventions') || '[]');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      savedCustoms.forEach(addCustomElement);
+      document.querySelectorAll('.column input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', updateProgressNote);
+      });
+    });
+
+    function addCustomIntervention() {
+      const input = document.getElementById('customInput');
+      const value = input.value.trim();
+      if (!value || savedCustoms.includes(value)) return;
+      savedCustoms.push(value);
+      localStorage.setItem('customInterventions', JSON.stringify(savedCustoms));
+      addCustomElement(value);
+      input.value = '';
+      updateProgressNote();
+    }
+
+    function addCustomElement(text) {
+      const div = document.createElement('div');
+      div.className = 'inline-checkbox';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = text;
+      cb.addEventListener('change', updateProgressNote);
+      div.appendChild(cb);
+      div.appendChild(document.createTextNode(' ' + text));
+      document.getElementById('customList').appendChild(div);
+    }
+
+    function removeSelectedIntervention() {
+      const checkboxes = document.querySelectorAll('#customList input[type="checkbox"]:checked');
+      checkboxes.forEach(cb => {
+        const value = cb.value;
+        savedCustoms = savedCustoms.filter(item => item !== value);
+        localStorage.setItem('customInterventions', JSON.stringify(savedCustoms));
+        cb.parentElement.remove();
+      });
+      updateProgressNote();
+    }
+  </script>
+</head>
+<body>
+
+  <h2>Progress Note Form</h2>
+  <form id="progressNoteForm" oninput="updateProgressNote()">
+
+    <h3>DATA:</h3>
+    <label for="diagnoses">Diagnoses:</label>
+    <textarea id="diagnoses" name="diagnoses" oninput="autoResize(this)"></textarea>
+
+    <label for="problemsAddressed">Problems Addressed in the Counseling Session:</label>
+    <textarea id="problemsAddressed" name="problemsAddressed" oninput="autoResize(this)"></textarea>
+
+    <label for="updatesProgress">Updates and Progress to Client's Treatment Goals:</label>
+    <textarea id="updatesProgress" name="updatesProgress" oninput="autoResize(this)"></textarea>
+
+    <div class="inline-checkbox">
+      <input type="checkbox" id="toxicologyScreen" name="toxicologyScreen">
+      <label for="toxicologyScreen" class="inline-label">Client provided a toxicology screen</label>
+    </div>
+
+    <label for="additionalNotes">Additional Notes:</label>
+    <textarea id="additionalNotes" name="additionalNotes" oninput="autoResize(this)"></textarea>
+
+    <h3>Interventions Used:</h3>
+    <div class="interventions">
+      <!-- Column 1: Custom -->
+      <div class="column">
+        <strong>Custom Interventions</strong><br>
+        <div class="controls">
+          <input type="text" id="customInput" placeholder="Enter custom intervention">
+          <button type="button" onclick="addCustomIntervention()">+</button>
+          <button type="button" onclick="removeSelectedIntervention()">-</button>
+        </div>
+        <div id="customList"><div class="inline-checkbox"><input type="checkbox" value="PD: Interpretation"> PD: Interpretation</div><div class="inline-checkbox"><input type="checkbox" value="PD: Clarification"> PD: Clarification</div><div class="inline-checkbox"><input type="checkbox" value="PD: Confrontation"> PD: Confrontation</div><div class="inline-checkbox"><input type="checkbox" value="PD: Linking Past &amp; Present"> PD: Linking Past &amp; Present</div><div class="inline-checkbox"><input type="checkbox" value="PD: Defense Interpretation"> PD: Defense Interpretation</div><div class="inline-checkbox"><input type="checkbox" value="PD: Identifying Resistance"> PD: Identifying Resistance</div><div class="inline-checkbox"><input type="checkbox" value="Inner Child Work"> Inner Child Work</div><div class="inline-checkbox"><input type="checkbox" value="Reflection"> Reflection</div><div class="inline-checkbox"><input type="checkbox" value="Mirroring"> Mirroring</div></div>
+      </div>
+
+      <!-- Column 2: CBT -->
+      <div class="column">
+        <strong>CBT</strong><br>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Cognitive Restructuring">Cognitive Restructuring</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Behavioral Activation">Behavioral Activation</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Mindfulness Training">Mindfulness Training</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Problem-Solving">Problem-Solving</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Activity Scheduling">Activity Scheduling</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Relaxation Techniques">Relaxation Techniques</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Cognitive Defusion">Cognitive Defusion</div>
+        <div class="inline-checkbox"><input type="checkbox" name="CBT" value="Identifying Cognitive Distortions and alternative thinking patterns">Identifying Cognitive Distortions and alternative thinking patterns</div>
+        Other: <input type="text" id="CBTOther">
+      </div>
+
+      <!-- Column 3: Narrative Interventions -->
+      <div class="column">
+        <strong>Narrative Interventions</strong><br>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Externalization">Externalization</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Re-authoring">Re-authoring</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Deconstruction">Deconstruction</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Unique Outcomes">Unique Outcomes</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Re-membering">Re-membering</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Scaffolding Conversations">Scaffolding Conversations</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Narrative Interventions" value="Reframing">Reframing</div>
+        Other: <input type="text" id="NarrativeInterventionsOther">
+      </div>
+
+      <!-- Column 4: Solution Focused -->
+      <div class="column">
+        <strong>Solution Focused</strong><br>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Miracle Question">Miracle Question</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Scaling Questions">Scaling Questions</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Exception-finding">Exception-finding</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Coping Questions">Coping Questions</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Goal Setting">Goal Setting</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Solution Focused" value="Identifying Resources">Identifying Resources</div>
+        Other: <input type="text" id="SolutionFocusedOther">
+      </div>
+
+      <!-- Column 5: Person Centered -->
+      <div class="column">
+        <strong>Person Centered</strong><br>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Empathy">Empathy</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Active Listening">Active Listening</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Reflective Listening">Reflective Listening</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Open-ended questions">Open-ended questions</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Summarizing">Summarizing</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Validation">Validation</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Silence">Silence</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Emotional Presence">Emotional Presence</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Encouraging Autonomy">Encouraging Autonomy</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Facilitation of Self-Discovery">Facilitation of Self-Discovery</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Person Centered" value="Unconditional Positive Regard">Unconditional Positive Regard</div>
+        Other: <input type="text" id="PersonCenteredOther">
+      </div>
+
+      <!-- Column 6: Motivational Interviewing -->
+      <div class="column">
+        <strong>Motivational Interviewing</strong><br>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Open-Ended Questions">Open-Ended Questions</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Affirmations">Affirmations</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Reflective Listening">Reflective Listening</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Summarizing">Summarizing</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Decisional Balance (Pros/Cons)">Decisional Balance (Pros/Cons)</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Developing and Identifying Discrepancy">Developing and Identifying Discrepancy</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Supporting Self-Efficacy">Supporting Self-Efficacy</div>
+        <div class="inline-checkbox"><input type="checkbox" name="Motivational Interviewing" value="Evoking Commitment Language">Evoking Commitment Language</div>
+        Other: <input type="text" id="MotivationalInterviewingOther">
+      </div>
+    </div>
+
+    <h3>ASSESSMENT:</h3>
+    <label for="mentalStatus">Mental Status Exam:</label>
+    <textarea id="mentalStatus" name="mentalStatus" oninput="autoResize(this)"></textarea>
+
+    <label for="additionalAssessment">Additional Assessment:</label>
+    <textarea id="additionalAssessment" name="additionalAssessment" oninput="autoResize(this)"></textarea>
+
+    <h3>RESPONSE:</h3>
+    <label for="response">Response:</label>
+    <textarea id="response" name="response" oninput="autoResize(this)"></textarea>
+
+    <h3>PLAN:</h3>
+    <label for="plan">Plan:</label>
+    <textarea id="plan" name="plan" oninput="autoResize(this)"></textarea>
+  </form>
+
+  <h3>Progress Note Textbox</h3>
+  <textarea id="progressNote" oninput="autoResize(this)"></textarea>
+  <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+
+</body></html>
